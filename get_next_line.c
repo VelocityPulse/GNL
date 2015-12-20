@@ -20,6 +20,14 @@ int		ft_checkline(char *buff)
 {
 	int i;
 
+	i = 0;
+	while (buff[i])
+	{
+		if (buff[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 char	*ft_swapchain(char *src)
@@ -36,7 +44,6 @@ char	*ft_swapchain(char *src)
 char	*ft_capture(const int fd)
 {
 	char	*buff;
-	char	*line;
 	int		ret;
 	int		i;
 
@@ -46,14 +53,17 @@ char	*ft_capture(const int fd)
 	while (1)
 	{
 		ret = read(fd, buff, BUFF_SIZE);
-		line = ft_swapchain(buff);
-		if (ft_checkline(line))
-			return (ft_cutend(line));
+		
 	}
 	return (&buff[0]);
 }
 
 int		get_next_line(const int fd, char **line)
 {
+	static char	*end_chain;
+	char		*
+
+	end_chain = NULL;
+	if )
 	return (ft_capture(fd));
 }
