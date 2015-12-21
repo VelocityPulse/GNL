@@ -15,6 +15,10 @@
 void	*ft_memalloc(size_t size);
 int		ft_strlen(char *src);
 char	*ft_strcpy(char *dst, const char *src);
+char	*ft_strstr(const char *s1, char *s2);
+char	*ft_strsub(char const *s, unsigned int start, size_t len);
+char	*ft_strdup(const char *s1);
+char	*ft_strchr(const char *s1, int c);
 
 int		ft_checkline(char *buff)
 {
@@ -24,46 +28,47 @@ int		ft_checkline(char *buff)
 	while (buff[i])
 	{
 		if (buff[i] == '\n')
-			return (1);
+			return (i);
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
-char	*ft_swapchain(char *src)
+char	*ft_swapchain(char *buff)
 {
 	char	*dst;
-	int		len;
 
-	len = ft_strlen(src);
-	dst = (char *)ft_memalloc(len + BUFF_SIZE);
-	dst = ft_strcpy(dst, src);
+	dst = (char *)ft_memalloc(ft_strlen(buff) + BUFF_SIZE);
+	dst = ft_strcpy(dst, buff);
 	return (dst);
 }
 
-char	*ft_capture(const int fd)
+int		ft_capture(const int fd, char **line, char **end_chain)
 {
-	char	*buff;
 	int		ret;
-	int		i;
+	char	*buff;
+	char	*capture;
+	int		slash_n;
 
-	i = 0;
-	line = NULL;
 	buff = (char *)ft_memalloc(BUFF_SIZE);
-	while (1)
+	while (!(ft_strstr(buff, "\n")))
 	{
-		ret = read(fd, buff, BUFF_SIZE);
-		
+		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
+			return (-1);
+		capture = ft_swapchain(buff);
 	}
-	return (&buff[0]);
+	free(buff);
+	*end_chain = ft_strdup(ft_strchr(capture, '\n'));
+	*line = ft_strdup(ft_strsub(capture, 0, ft_checkline(capture)));
+	free(capture);
+	if (ret < BUFF_SIZE)
+		return(0);
+	return (1);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	static char	*end_chain;
-	char		*
+	static char	*end_chain = NULL;
+	char		*chain;
 
-	end_chain = NULL;
-	if )
-	return (ft_capture(fd));
 }
