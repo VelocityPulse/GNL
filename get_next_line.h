@@ -6,14 +6,14 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:44:27 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/21 19:13:36 by                  ###   ########.fr       */
+/*   Updated: 2015/12/22 15:18:55 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 30
+# define BUFF_SIZE 1000
 # define YOLO ft_putstr("YOLO\n");
 # define PAUSE while(1){sleep(10000);}
 
