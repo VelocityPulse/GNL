@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/22 02:16:38 by                  ###   ########.fr       */
+/*   Updated: 2015/12/22 02:36:04 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int		get_next_line(const int fd, char **line)
 		if ((i = ft_checkline(end_chain)) < ft_strlen(end_chain))
 		{
 			ft_memdel((void **)line);
-			*line = ft_strdup(ft_strsub(end_chain, 0, i));
+			*line = ft_strsub(end_chain, 0, i);
 			end_chain = &end_chain[i];
 			return (1);
 		}
