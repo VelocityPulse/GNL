@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/22 01:49:57 by                  ###   ########.fr       */
+/*   Updated: 2015/12/22 02:16:38 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static	char	*ft_swapchain(char *s1, char *s2)
 	if (!s1)
 		return (ft_strdup(s2));
 	dst = ft_strjoin(s1, s2);
-	free(s1);
+	ft_memdel((void **)&s1);
 	return (dst);
 }
 
@@ -68,7 +68,7 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 			return (-1);
 		capture = ft_swapchain(capture, buff);
 	}
-	free(buff);
+	ft_memdel((void **)&buff);
 	if (end_chain != NULL)
 		ft_memdel((void *)end_chain);
 	if (capture[(i = ft_checkline(capture) + 1)])
@@ -77,8 +77,7 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 		end_chain[0][ft_strlen(&capture[i])] = 0;
 	}
 	*line = ft_strsub(capture, 0, i);
-	YOLO
-	free(capture);
+	ft_memdel((void **)&capture);
 	if (ret < BUFF_SIZE)
 		return(0);
 	return (1);
@@ -88,7 +87,6 @@ int		get_next_line(const int fd, char **line)
 {
 	static char	*end_chain = NULL;
 	char		*temp;
-	char		**chain;
 	int			i;
 	int			state;
 
@@ -106,8 +104,8 @@ int		get_next_line(const int fd, char **line)
 		else
 		{
 			temp = ft_strdup(end_chain);
-			state = ft_capture(fd, chain, &end_chain);
-			*line = ft_swapchain(end_chain, *line);
+			state = ft_capture(fd, line, &end_chain);
+			*line = ft_swapchain(temp, *line);
 			return (state);
 		}
 	}

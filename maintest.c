@@ -8,17 +8,17 @@ int main(int argc, char **argv)
 {
 	int		fd;
 	char	*line;
-	int i;
+	int state;
 
-	i = 2;
+	state = 1;
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
-		while (i)
+		while (state)
 		{
-			printf("\n\n--------\nreturn GNL : %d\n", get_next_line(fd, &line));
+			state = get_next_line(fd, &line); 
+			printf("state : %d\n", state);
 			printf("line : %s\n", line);
-			i--;
 		}
 		close(fd);
 	}
