@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/22 01:05:55 by                  ###   ########.fr       */
+/*   Updated: 2015/12/22 01:14:50 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 		ft_memdel((void *)end_chain);
 	if (capture[ft_checkline(capture) + 1])
 	{
-		end_chain = (char **)ft_strdup(&capture[ft_checkline(capture) + 1]);
-		end_chain[ft_strlen(&capture[ft_checkline(capture) + 1])] = 0;
+		*end_chain = ft_strdup(&capture[ft_checkline(capture) + 1]);
+		end_chain[0][ft_strlen(&capture[ft_checkline(capture) + 1])] = 0;
 	}
 	*line = ft_strdup(ft_strsub(capture, 0, ft_checkline(capture)));
 	free(capture);
