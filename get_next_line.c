@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 12:20:03 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 12:40:41 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static	char	*ft_swapchain(char *s1, char *s2)
 	ft_memdel((void **)&s1);
 	return (dst);
 }
-
+#include <stdio.h>
 static int		ft_capture(const int fd, char **line, char **end_chain)
 {
 	char	*buff;
@@ -60,11 +60,10 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 	ft_memdel((void **)end_chain);
 	if ((i = ft_checkline(capture)) < ft_strlen(capture))
 		*end_chain = ft_strdup(&capture[i + 1]);
-//	ft_putstr(capture); ft_putchar(' ');
 	*line = ft_strsub(capture, 0, i);
-	if (end_chain[0])
-		return (1);
-	return (0);
+	if (!*end_chain[0] && ret < BUFF_SIZE)
+		return (0);
+	return (1);
 }
 
 
