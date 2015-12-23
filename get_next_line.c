@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/22 22:58:05 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 12:20:03 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 	buff = (char *)ft_memalloc(BUFF_SIZE);
 	while (ft_strchr(buff, '\n') == NULL && ret != 0)
 	{
-		ft_bzero(buff, BUFF_SIZE);
+		ft_bzero(buff, BUFF_SIZE + 1);
 		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
 		{
 			ft_memdel((void **)&buff);
@@ -60,7 +60,7 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 	ft_memdel((void **)end_chain);
 	if ((i = ft_checkline(capture)) < ft_strlen(capture))
 		*end_chain = ft_strdup(&capture[i + 1]);
-	ft_putstr(*end_chain); ft_putchar(' ');
+//	ft_putstr(capture); ft_putchar(' ');
 	*line = ft_strsub(capture, 0, i);
 	if (end_chain[0])
 		return (1);
