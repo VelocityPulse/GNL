@@ -6,17 +6,17 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:44:27 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 12:41:31 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 13:39:27 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 60
 # define YOLO ft_putstr("YOLO\n");
-# define YOLO1 ft_putstr("YOLO1-\n");
-# define YOLO2 ft_putstr("YOLO2--\n");
+# define YOLO1 ft_putstr("\nYOLO1-\n");
+# define YOLO2 ft_putstr("\nYOLO2--\n");
 # define PAUSE while(1){sleep(10000);}
 
 # include <fcntl.h>
