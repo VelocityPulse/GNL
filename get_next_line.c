@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 16:39:49 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 17:55:15 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,29 @@ static	char	*ft_swapchain(char **s1, char **s2, int mode)
 	char	*dst;
 	char	*temp;
 
-	if (mode == 1)
+	if (mode == 0)
 	{
 		if (!*s1)
-			return (ft_strdup(*s2));
-		dst = ft_strjoin(*s1, *s2);
+			return (ft_strdup((char *)s2));
+		dst = ft_strjoin(*s1, (char *)s2);
 		ft_memdel((void **)s1);
 		return (dst);
 	}
-	else
+	else if (mode == 1)
 	{
-		dst = ft_strjoin(*s1, *s2);
+		temp = ft_strsub(*s1, ft_checkline(*s1) + 1, ft_strlen(*s1));
 		ft_memdel((void **)s1);
-		ft_memdel((void **)s2);
-		return (dst);
+		return (temp);
 	}
+	dst = ft_strjoin(*s1, *s2);
+	ft_memdel((void **)s1);
+	ft_memdel((void **)s2);
+	return (dst);
 }
 
 static int		ft_capture(const int fd, char **line, char **end_chain)
 {
-	char	buff[BUFF_SIZE]; // declaration ici 
+	char	buff[BUFF_SIZE];
 	char	*capture;
 	int		ret;
 	int		i;
@@ -65,9 +68,10 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 		ft_bzero(buff, BUFF_SIZE + 1);
 		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
 			return (-1);
-		capture = ft_swapchain(&capture, (char **)&buff, 1); // cast ici 
+		capture = ft_swapchain(&capture, (char **)&buff, 0);
 	}
 	ft_memdel((void **)end_chain);
+	YOLO2
 	if ((i = ft_checkline(capture)) < (int)ft_strlen(capture))
 		*end_chain = ft_strdup(&capture[i + 1]);
 	*line = ft_strsub(capture, 0, i);
@@ -87,20 +91,19 @@ int		get_next_line(const int fd, char **line)
 	int			state;
 
 	ft_memdel((void **)line);
-	if (!end_chain)
+	if (!*end_chain)
 		return (ft_capture(fd, line, &end_chain));
 	if ((i = ft_checkline(end_chain)) < (int)ft_strlen(end_chain))
 	{
-		YOLO
 		ft_memdel((void **)line);
 		*line = ft_strsub(end_chain, 0, i);
-		end_chain = &end_chain[i + 1];
+		end_chain = ft_swapchain(&end_chain, NULL, 1);
 		if (end_chain[0])
 			return (1);
 		return (0);
 	}
 	temp = ft_strdup(end_chain);
 	state = ft_capture(fd, line, &end_chain);
-	*line = ft_swapchain(&temp, line, 0);
+	*line = ft_swapchain(&temp, line, 2);
 	return (state);
 }
