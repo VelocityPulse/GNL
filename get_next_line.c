@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 17:55:15 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 17:56:10 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int		get_next_line(const int fd, char **line)
 	int			state;
 
 	ft_memdel((void **)line);
-	if (!*end_chain)
+	if (!end_chain)
 		return (ft_capture(fd, line, &end_chain));
 	if ((i = ft_checkline(end_chain)) < (int)ft_strlen(end_chain))
 	{
