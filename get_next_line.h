@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:44:27 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 13:39:27 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 16:26:12 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,12 @@
 # define GET_NEXT_LINE_H
 
 # define BUFF_SIZE 60
-# define YOLO ft_putstr("YOLO\n");
+# define YOLO ft_putstr("\nYOLO\n");
 # define YOLO1 ft_putstr("\nYOLO1-\n");
 # define YOLO2 ft_putstr("\nYOLO2--\n");
-# define PAUSE while(1){sleep(10000);}
-
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
-
-#include "libft.h"
+# define PAUSE while(1){sleep(1000);}
+# include "./libft/libft.h"
 
 int		get_next_line(const int fd, char **line);
 
-
 #endif
-
-
-// return 0 if last line
-// return 1 if line read
-// return -1 if read return -1

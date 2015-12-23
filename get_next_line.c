@@ -6,10 +6,13 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 13:37:29 by                  ###   ########.fr       */
+/*   Updated: 2015/12/23 16:39:49 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include "get_next_line.h"
 
 static int		ft_checkline(char *str)
@@ -26,41 +29,49 @@ static int		ft_checkline(char *str)
 	return (i);
 }
 
-static	char	*ft_swapchain(char *s1, char *s2)
+static	char	*ft_swapchain(char **s1, char **s2, int mode)
 {
 	char	*dst;
+	char	*temp;
 
-	if (!s1)
-		return (ft_strdup(s2));
-	dst = ft_strjoin(s1, s2);
-	ft_memdel((void **)&s1);
-	return (dst);
+	if (mode == 1)
+	{
+		if (!*s1)
+			return (ft_strdup(*s2));
+		dst = ft_strjoin(*s1, *s2);
+		ft_memdel((void **)s1);
+		return (dst);
+	}
+	else
+	{
+		dst = ft_strjoin(*s1, *s2);
+		ft_memdel((void **)s1);
+		ft_memdel((void **)s2);
+		return (dst);
+	}
 }
 
 static int		ft_capture(const int fd, char **line, char **end_chain)
 {
-	char	*buff;
+	char	buff[BUFF_SIZE]; // declaration ici 
 	char	*capture;
 	int		ret;
 	int		i;
 
 	capture = NULL;
 	ret = 1;
-	buff = (char *)ft_memalloc(BUFF_SIZE);
 	while (ft_strchr(buff, '\n') == NULL && ret != 0)
 	{
 		ft_bzero(buff, BUFF_SIZE + 1);
 		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
-		{
-			ft_memdel((void **)&buff);
 			return (-1);
-		}
-		capture = ft_swapchain(capture, buff);
+		capture = ft_swapchain(&capture, (char **)&buff, 1); // cast ici 
 	}
 	ft_memdel((void **)end_chain);
-	if ((i = ft_checkline(capture)) < ft_strlen(capture))
+	if ((i = ft_checkline(capture)) < (int)ft_strlen(capture))
 		*end_chain = ft_strdup(&capture[i + 1]);
 	*line = ft_strsub(capture, 0, i);
+	ft_memdel((void **)&capture);
 	if (!*end_chain && ret < BUFF_SIZE)
 		return (0);
 	return (1);
@@ -75,12 +86,12 @@ int		get_next_line(const int fd, char **line)
 	int			i;
 	int			state;
 
-
 	ft_memdel((void **)line);
 	if (!end_chain)
 		return (ft_capture(fd, line, &end_chain));
-	if ((i = ft_checkline(end_chain)) < ft_strlen(end_chain))
+	if ((i = ft_checkline(end_chain)) < (int)ft_strlen(end_chain))
 	{
+		YOLO
 		ft_memdel((void **)line);
 		*line = ft_strsub(end_chain, 0, i);
 		end_chain = &end_chain[i + 1];
@@ -90,8 +101,6 @@ int		get_next_line(const int fd, char **line)
 	}
 	temp = ft_strdup(end_chain);
 	state = ft_capture(fd, line, &end_chain);
-	temp2 = ft_strdup(*line);
-	ft_memdel((void **)line);
-	*line = ft_strjoin(temp, temp2);
+	*line = ft_swapchain(&temp, line, 0);
 	return (state);
 }
