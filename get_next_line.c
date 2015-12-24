@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/24 12:29:26 by                  ###   ########.fr       */
+/*   Updated: 2015/12/24 17:23:12 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,98 +15,67 @@
 #include <stdlib.h>
 #include "get_next_line.h"
 
-static int		ft_checkline(char *str)
+static char		*ft_get_line(char *str)
 {
-	int i;
+	int		i;
+	char	*line;
 
 	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\n')
-			return (i);
+	if (!str)
+		return (NULL);
+	while (str[i] && str[i] != '\n')
 		i++;
-	}
-	return (i);
+	line = ft_strncpy(ft_strnew(i), str, i);
+	line[i] = 0;
+	return (line);
 }
 
-static	char	*ft_swapchain(char **s1, char **s2, int mode)
+static char		*ft_end_chain(char *str)
 {
-	char	*dst;
-	char	*temp;
 	int		i;
+	char	*end_chain;
 
-	if (mode == 0)
-	{
-		if (!*s1)
-			return (ft_strdup((char *)s2));
-		dst = ft_strjoin(*s1, (char *)s2);
-		ft_memdel((void **)s1);
-		return (dst);
-	}
-	else if (mode == 1)
-	{
-		i = ft_checkline((char *)s1);
-		temp = ft_strsub((char *)s1, i + 1, ft_strlen((char *)s1));
-		ft_memdel((void **)(char *)&s1);
-		return (temp);
-	}
-	dst = ft_strjoin(*s1, *s2);
-	ft_memdel((void **)s1);
-	ft_memdel((void **)s2);
-	return (dst);
+	i = 0;
+	end_chain = NULL;
+	if (!str)
+		return (NULL);
+	while (str[i] && str[i] != '\n')
+		i++;
+	end_chain = ft_strdup(&str[i + 1]);
+	if (i == (int)ft_strlen(str))
+		ft_memdel((void **)&end_chain);
+	ft_memdel((void **)&str);
+	return (end_chain);
 }
-
-static int		ft_capture(const int fd, char **line, char **end_chain)
-{
-	char	buff[BUFF_SIZE];
-	char	*capture;
-	int		ret;
-	int		i;
-
-	capture = NULL;
-	ret = 1;
-	while (ft_strchr(buff, '\n') == NULL && ret != 0)
-	{
-		ft_bzero(buff, BUFF_SIZE + 1);
-		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
-			return (-1);
-		capture = ft_swapchain(&capture, (char **)&buff, 0);
-	}
-	ft_memdel((void **)(char *)&end_chain);
-	if ((i = ft_checkline(capture)) < (int)ft_strlen(capture))
-		end_chain = (char **)ft_strdup(&capture[i + 1]);
-	*line = ft_strsub(capture, 0, i);
-	ft_memdel((void **)&capture);
-	if (!end_chain && ret < BUFF_SIZE)
-		return (0);
-	return (1);
-}
-
 
 int		get_next_line(const int fd, char **line)
 {
-	static char	**end_chain = NULL;
+	static char	*save = NULL;
+	char		*buff;
 	char		*temp;
-	char		*temp2;
-	int			i;
-	int			state;
+	int			ret;
 
-	ft_memdel((void **)line);
-	if (!end_chain)
-		return (ft_capture(fd, line, end_chain));
-	if ((i = ft_checkline(*end_chain)) < (int)ft_strlen(*end_chain))
+	ret = 42;
+	if (!(buff = ft_strnew(BUFF_SIZE + 1)))
+		return (-1);
+	if (!save)
+		save = ft_strnew(1);
+	while (!(ft_strchr(save, '\n')) && ret > 0)
 	{
-		ft_memdel((void **)line);
-		*line = ft_strsub((char *)end_chain, 0, i);
-		*end_chain = ft_swapchain(end_chain, NULL, 1);
-		if (end_chain[0])
-			return (1);
+		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
+			return (-1);
+		buff[ret] = 0;
+		temp = save;
+		save = ft_strjoin(save, buff);
+		ft_memdel((void **)&temp);
+	}
+	ft_memdel((void **)&buff);
+	*line = ft_get_line(save);
+	save = ft_end_chain(save);
+	if (ret == 0 && !save)
+	{
+		ft_memdel((void **)&save);
 		return (0);
 	}
-	temp = ft_strdup(*end_chain);
-	state = ft_capture(fd, line, end_chain);
-	*line = ft_swapchain(&temp, line, 2);
-	return (state);
+	return (1);
 }
-
-//coucou ici
