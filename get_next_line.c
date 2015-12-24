@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2015/12/23 19:54:17 by                  ###   ########.fr       */
+/*   Updated: 2015/12/24 12:29:26 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static	char	*ft_swapchain(char **s1, char **s2, int mode)
 {
 	char	*dst;
 	char	*temp;
+	int		i;
 
 	if (mode == 0)
 	{
@@ -44,8 +45,9 @@ static	char	*ft_swapchain(char **s1, char **s2, int mode)
 	}
 	else if (mode == 1)
 	{
-		temp = ft_strsub(*s1, ft_checkline(*s1) + 1, ft_strlen(*s1));
-		ft_memdel((void **)s1);
+		i = ft_checkline((char *)s1);
+		temp = ft_strsub((char *)s1, i + 1, ft_strlen((char *)s1));
+		ft_memdel((void **)(char *)&s1);
 		return (temp);
 	}
 	dst = ft_strjoin(*s1, *s2);
@@ -70,7 +72,7 @@ static int		ft_capture(const int fd, char **line, char **end_chain)
 			return (-1);
 		capture = ft_swapchain(&capture, (char **)&buff, 0);
 	}
-	ft_memdel((void **)(char *)end_chain);
+	ft_memdel((void **)(char *)&end_chain);
 	if ((i = ft_checkline(capture)) < (int)ft_strlen(capture))
 		end_chain = (char **)ft_strdup(&capture[i + 1]);
 	*line = ft_strsub(capture, 0, i);
@@ -91,17 +93,11 @@ int		get_next_line(const int fd, char **line)
 
 	ft_memdel((void **)line);
 	if (!end_chain)
-	{
-		YOLO1
-		state = ft_capture(fd, line, end_chain);
-		YOLO
-		return (state);
 		return (ft_capture(fd, line, end_chain));
-	}
 	if ((i = ft_checkline(*end_chain)) < (int)ft_strlen(*end_chain))
 	{
 		ft_memdel((void **)line);
-		*line = ft_strsub(*end_chain, 0, i);
+		*line = ft_strsub((char *)end_chain, 0, i);
 		*end_chain = ft_swapchain(end_chain, NULL, 1);
 		if (end_chain[0])
 			return (1);
@@ -112,3 +108,5 @@ int		get_next_line(const int fd, char **line)
 	*line = ft_swapchain(&temp, line, 2);
 	return (state);
 }
+
+//coucou ici
