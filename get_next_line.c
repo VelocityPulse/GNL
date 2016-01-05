@@ -6,13 +6,10 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/05 14:40:33 by                  ###   ########.fr       */
+/*   Updated: 2016/01/05 14:48:00 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include "get_next_line.h"
 
 static char		*ft_get_line(char *str)
