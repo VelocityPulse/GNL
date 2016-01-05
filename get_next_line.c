@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/05 14:30:36 by                  ###   ########.fr       */
+/*   Updated: 2016/01/05 14:40:33 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static char		*ft_end_chain(char *str)
 	return (end_chain);
 }
 
-static int		ft_alloc_gnl(char *save, char *buff)
+static int		ft_alloc_gnl(char **save, char **buff)
 {
-	if (!(buff = ft_strnew(BUFF_SIZE + 1)))
+	if (!(*buff = ft_strnew(BUFF_SIZE + 1)))
 		return (-1);
-	if (!save)
+	if (!*save)
 	{
-		if (!(save = ft_strnew(1)))
+		if (!(*save = ft_strnew(1)))
 			return (-1);
 	}
 	return (1);
@@ -68,7 +68,7 @@ int				get_next_line(const int fd, char **line)
 	int			ret;
 
 	ret = 42;
-	if (ft_alloc_gnl(save, buff) == -1)
+	if (ft_alloc_gnl(&save, &buff) == -1)
 		return (-1);
 	while (!(ft_strchr(save, '\n')) && ret > 0)
 	{
