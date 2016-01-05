@@ -8,17 +8,20 @@ int main(int argc, char **argv)
 	int		fd;
 	char	*line;
 	int state;
+	int temp;
 
 	state = 13;
+	temp = 1;
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
-		while (state)
+		while (temp && state)
 		{
 			state = get_next_line(fd, &line); 
 			printf("state : %d\n", state);
 			printf("line : %s\n", line);
-//			state--;
+			temp = state;	// La boucle s'execute en fonction du retour de gnl.
+//			state--;	// la boucle force 13 tours.
 		}
 		close(fd);
 	}
