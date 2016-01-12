@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/18 14:43:33 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/05 14:48:00 by                  ###   ########.fr       */
+/*   Created: 2016/01/05 17:48:37 by cchameyr          #+#    #+#             */
+/*   Updated: 2016/01/05 17:50:00 by cchameyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ int				get_next_line(const int fd, char **line)
 	char		*temp;
 	int			ret;
 
-	ret = 42;
-	if (ft_alloc_gnl(&save, &buff) == -1)
+	if (((ret = 42)) && (ft_alloc_gnl(&save, &buff) == -1))
 		return (-1);
 	while (!(ft_strchr(save, '\n')) && ret > 0)
 	{
