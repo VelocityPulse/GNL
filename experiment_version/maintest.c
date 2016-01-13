@@ -13,17 +13,17 @@ int main(int argc, char **argv)
 	state = 13;
 	temp = 1;
 	if (argc == 2)
-	{
 		fd = open(argv[1], O_RDONLY);
-		while (temp && state)
-		{
-			state = get_next_line(fd, &line); 
-			printf("state : %d\n", state);
-			printf("line : %s\n", line);
-			temp = state;	// La boucle s'execute en fonction du retour de gnl.
-//			state--;	// la boucle force 13 tours.
-		}
-		close(fd);
+	else
+		fd = 0;
+	while (temp && state)
+	{
+		state = get_next_line(fd, &line); 
+		printf("state : %d\n", state);
+		printf("line : %s\n", line);
+		temp = state;	// La boucle s'execute en fonction du retour de gnl.
+		//			state--;	// la boucle force 13 tours.
 	}
+	close(fd);
 	return (0);
 }
