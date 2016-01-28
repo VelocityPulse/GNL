@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 17:48:37 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/12 17:15:47 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/01/28 17:52:41 by cchameyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ int				get_next_line(const int fd, char **line)
 	char		*buff;
 	char		*temp;
 	int			ret;
+//	int			find;
 
+//	find = 0;
 	if (((ret = 42)) && (ft_alloc_gnl(&save, &buff) == -1))
 		return (-1);
 	while (!(ft_strchr(save, '\n')) && ret > 0)
@@ -75,10 +77,24 @@ int				get_next_line(const int fd, char **line)
 		save = ft_strjoin(save, buff);
 		ft_memdel((void **)&temp);
 	}
+/*
+	if (ft_strchr(save, '\n') == &save[ft_strlen(save) - 1])
+	{
+		find = 1;
+//		ft_putstr("\n\nfind");
+		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
+			return (-1);
+		buff[ret] = 0;
+		temp = save;
+		save = ft_strjoin(save, buff);
+		ft_memdel((void **)&temp);
+	}
+*/
 	ft_memdel((void **)&buff);
 	*line = ft_get_line(save);
 	save = ft_end_chain(save);
-	if (ret == 0 && !save)
+//	printf("\nsave : \"%s\" %d\n", save, ret);
+	if ((ret == 0 && !save)/* || (ret == 0 && find == 1)*/)
 	{
 		ft_memdel((void **)&save);
 		return (0);

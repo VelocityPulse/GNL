@@ -23,6 +23,8 @@ int main(int argc, char **argv)
 		printf("line : %s\n", line);
 		temp = state;	// La boucle s'execute en fonction du retour de gnl.
 		//			state--;	// la boucle force 13 tours.
+		if (state == -1)
+			break ;
 	}
 	close(fd);
 	return (0);
