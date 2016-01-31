@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 17:48:37 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/28 17:52:41 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/01/31 13:11:35 by cchameyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static char		*ft_end_chain(char *str)
 	return (end_chain);
 }
 
-static int		ft_alloc_gnl(char **save, char **buff)
+static int		ft_alloc_gnl(char **save, t_gnl *g)
 {
-	if (!(*buff = ft_strnew(BUFF_SIZE + 1)))
+	if (!(g->buff = ft_strnew(BUFF_SIZE + 1)))
 		return (-1);
 	if (!*save)
 	{
@@ -57,44 +57,39 @@ static int		ft_alloc_gnl(char **save, char **buff)
 	return (1);
 }
 
+static int		ft_gnl_read(int fd, char **save, t_gnl *g)
+{
+	g->find = 1;
+	if ((g->ret = read(fd, g->buff, BUFF_SIZE)) == -1)
+		return (-1);
+	g->buff[g->ret] = 0;
+	g->temp = *save;
+	*save = ft_strjoin(*save, g->buff);
+	ft_memdel((void **)&g->temp);
+	return (1);
+}
+
 int				get_next_line(const int fd, char **line)
 {
 	static char	*save = NULL;
-	char		*buff;
-	char		*temp;
-	int			ret;
-//	int			find;
+	t_gnl		g;
 
-//	find = 0;
-	if (((ret = 42)) && (ft_alloc_gnl(&save, &buff) == -1))
+	if (((g.ret = 42)) && (ft_alloc_gnl(&save, &g) == -1))
 		return (-1);
-	while (!(ft_strchr(save, '\n')) && ret > 0)
+	while (!(ft_strchr(save, '\n')) && g.ret > 0)
 	{
-		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
+		if (ft_gnl_read(fd, &save, &g) == -1)
 			return (-1);
-		buff[ret] = 0;
-		temp = save;
-		save = ft_strjoin(save, buff);
-		ft_memdel((void **)&temp);
 	}
-/*
-	if (ft_strchr(save, '\n') == &save[ft_strlen(save) - 1])
+	if ((ft_strchr(save, '\n') == &save[ft_strlen(save) - 1]) && !(g.find = 0))
 	{
-		find = 1;
-//		ft_putstr("\n\nfind");
-		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
+		if (ft_gnl_read(fd, &save, &g) == -1)
 			return (-1);
-		buff[ret] = 0;
-		temp = save;
-		save = ft_strjoin(save, buff);
-		ft_memdel((void **)&temp);
 	}
-*/
-	ft_memdel((void **)&buff);
+	ft_memdel((void **)&g.buff);
 	*line = ft_get_line(save);
 	save = ft_end_chain(save);
-//	printf("\nsave : \"%s\" %d\n", save, ret);
-	if ((ret == 0 && !save)/* || (ret == 0 && find == 1)*/)
+	if ((g.ret == 0 && !save) || (g.ret == 0 && g.find == 1))
 	{
 		ft_memdel((void **)&save);
 		return (0);
