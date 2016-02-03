@@ -16,15 +16,12 @@ int main(int argc, char **argv)
 		fd = open(argv[1], O_RDONLY);
 	else
 		fd = 0;
-	while (temp && state)
+	while ((state = get_next_line(fd, &line) > 0))
 	{
-		state = get_next_line(fd, &line); 
 		printf("state : %d\n", state);
 		printf("line : %s\n", line);
-		temp = state;	// La boucle s'execute en fonction du retour de gnl.
+		//temp = state;	// La boucle s'execute en fonction du retour de gnl.
 		//			state--;	// la boucle force 13 tours.
-		if (state == -1)
-			break ;
 	}
 	close(fd);
 	return (0);

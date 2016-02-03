@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:44:27 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/31 13:11:24 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:50:43 by cchameyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@
 # include <stdlib.h>
 # include "./libft/libft.h"
 
-# define BUFF_SIZE 5
+# define BUFF_SIZE 1
 
 typedef struct	s_gnl
 {
 	char		*buff;
 	char		*temp;
 	int			ret;
-	int			find;
 }				t_gnl;
 
-int		get_next_line(const int fd, char **line);
+int				get_next_line(const int fd, char **line);
 
 #endif

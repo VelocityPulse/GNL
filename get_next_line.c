@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 17:48:37 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/01/31 13:11:35 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:50:21 by cchameyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,41 +57,30 @@ static int		ft_alloc_gnl(char **save, t_gnl *g)
 	return (1);
 }
 
-static int		ft_gnl_read(int fd, char **save, t_gnl *g)
-{
-	g->find = 1;
-	if ((g->ret = read(fd, g->buff, BUFF_SIZE)) == -1)
-		return (-1);
-	g->buff[g->ret] = 0;
-	g->temp = *save;
-	*save = ft_strjoin(*save, g->buff);
-	ft_memdel((void **)&g->temp);
-	return (1);
-}
-
 int				get_next_line(const int fd, char **line)
 {
-	static char	*save = NULL;
+	static char	*save[256] = {NULL};
 	t_gnl		g;
 
-	if (((g.ret = 42)) && (ft_alloc_gnl(&save, &g) == -1))
+	if (((g.ret = 42)) && (ft_alloc_gnl(&save[fd], &g) == -1))
 		return (-1);
-	while (!(ft_strchr(save, '\n')) && g.ret > 0)
+	while (!(ft_strchr(save[fd], '\n')) && g.ret > 0)
 	{
-		if (ft_gnl_read(fd, &save, &g) == -1)
+		if ((g.ret = read(fd, g.buff, BUFF_SIZE)) == -1)
 			return (-1);
-	}
-	if ((ft_strchr(save, '\n') == &save[ft_strlen(save) - 1]) && !(g.find = 0))
-	{
-		if (ft_gnl_read(fd, &save, &g) == -1)
-			return (-1);
+		g.buff[g.ret] = 0;
+		g.temp = save[fd];
+		save[fd] = ft_strjoin(save[fd], g.buff);
+		ft_memdel((void **)&g.temp);
 	}
 	ft_memdel((void **)&g.buff);
-	*line = ft_get_line(save);
-	save = ft_end_chain(save);
-	if ((g.ret == 0 && !save) || (g.ret == 0 && g.find == 1))
+	*line = ft_get_line(save[fd]);
+	save[fd] = ft_end_chain(save[fd]);
+	if ((int)ft_strlen(*line))
+		return (1);
+	if (g.ret == 0 && !save[fd])
 	{
-		ft_memdel((void **)&save);
+		ft_memdel((void **)&save[fd]);
 		return (0);
 	}
 	return (1);
