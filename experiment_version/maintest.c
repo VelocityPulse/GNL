@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   maintest.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/02/15 14:47:36 by cchameyr          #+#    #+#             */
+/*   Updated: 2016/02/15 14:49:36 by cchameyr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../get_next_line.h"
 #include <stdio.h>
 #include <fcntl.h>
@@ -8,21 +20,17 @@ int main(int argc, char **argv)
 	int		fd;
 	char	*line;
 	int state;
-	int temp;
 
-	state = 13;
-	temp = 1;
 	if (argc == 2)
 		fd = open(argv[1], O_RDONLY);
 	else
 		fd = 0;
 	while ((state = get_next_line(fd, &line) > 0))
 	{
-		printf("state : %d\n", state);
 		printf("line : %s\n", line);
-		//temp = state;	// La boucle s'execute en fonction du retour de gnl.
-		//			state--;	// la boucle force 13 tours.
+		printf("state : %d\n\n", state);
 	}
+//	printf("state for fd 454 : %d\n", get_next_line(454, &line));
 	close(fd);
 	return (0);
 }
