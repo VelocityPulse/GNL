@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 17:48:37 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/02/03 15:50:21 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/02/15 14:44:02 by cchameyr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,25 @@ int				get_next_line(const int fd, char **line)
 	static char	*save[256] = {NULL};
 	t_gnl		g;
 
-	if (((g.ret = 42)) && (ft_alloc_gnl(&save[fd], &g) == -1))
+	if (((g.ret = 42)) && (ft_alloc_gnl(&save[fd % 256], &g) == -1))
 		return (-1);
-	while (!(ft_strchr(save[fd], '\n')) && g.ret > 0)
+	while (!(ft_strchr(save[fd % 256], '\n')) && g.ret > 0)
 	{
 		if ((g.ret = read(fd, g.buff, BUFF_SIZE)) == -1)
 			return (-1);
 		g.buff[g.ret] = 0;
-		g.temp = save[fd];
-		save[fd] = ft_strjoin(save[fd], g.buff);
+		g.temp = save[fd % 256];
+		save[fd % 256] = ft_strjoin(save[fd % 256], g.buff);
 		ft_memdel((void **)&g.temp);
 	}
 	ft_memdel((void **)&g.buff);
-	*line = ft_get_line(save[fd]);
-	save[fd] = ft_end_chain(save[fd]);
+	*line = ft_get_line(save[fd % 256]);
+	save[fd % 256] = ft_end_chain(save[fd % 256]);
 	if ((int)ft_strlen(*line))
 		return (1);
-	if (g.ret == 0 && !save[fd])
+	if (g.ret == 0 && !save[fd % 256])
 	{
-		ft_memdel((void **)&save[fd]);
+		ft_memdel((void **)&save[fd % 256]);
 		return (0);
 	}
 	return (1);
