@@ -6,7 +6,7 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/18 14:44:27 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/02/03 15:50:43 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/04/08 23:29:26 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include "./libft/libft.h"
+# include "libft.h"
 
 # define BUFF_SIZE 1
 

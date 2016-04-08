@@ -6,11 +6,11 @@
 /*   By: cchameyr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 17:48:37 by cchameyr          #+#    #+#             */
-/*   Updated: 2016/02/15 14:44:02 by cchameyr         ###   ########.fr       */
+/*   Updated: 2016/04/08 23:30:03 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../headers/get_next_line.h"
 
 static char		*ft_get_line(char *str)
 {
